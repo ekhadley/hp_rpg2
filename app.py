@@ -28,6 +28,7 @@ def select_story(data):
         #model_name = "claude-opus-4-20250514",
         callback_handler = WebCallbackHandler(socket),
         system_prompt = getFullStoryInstruction(story_name),
+        #system_prompt = "You are a helpful assistant that can help write stories.",
         toolbox = StoryToolbox(story_name),
     )
 

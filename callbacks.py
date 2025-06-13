@@ -13,6 +13,10 @@ def example_tool_submit_callback(names: list[str], inputs: list[dict], results: 
 class CallbackHandler:
     def text_output(self, text):
         pass
+    def think_output(self, text):
+        pass
+    def think_end(self, text):
+        pass
     def tool_request(self, name:str, inputs: dict):
         pass
     def tool_submit(self, names: list[str], inputs: list[dict], results: list[str]):
@@ -47,6 +51,17 @@ class WebCallbackHandler(CallbackHandler):
     def __init__(self, socket: SocketIO):
         self.socket = socket
         self.outputting_text = False
+        self.thinking = False
+
+    def think_output(self, text):
+        if not self.thinking:
+            self.thinking = True
+            self.socket.emit('think_start')
+        self.emit('think_output', text=text)
+    
+    def think_end(self):
+        self.thinking = False
+        self.socket.emit('think_end')
 
     def text_output(self, text):
         if not self.outputting_text:

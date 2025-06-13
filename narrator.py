@@ -20,7 +20,7 @@ class Narrator:
         self.tb = toolbox
         self.client = anthropic.Anthropic()
         self.messages: list[dict] = []
-        self.max_tokens = 4096#16384
+        self.max_tokens = 16384
         self.system_prompt = system_prompt
         self.system = [
             {
@@ -69,25 +69,31 @@ class Narrator:
                 tools=self.tb.schemas,
                 messages=self.messages,
                 max_tokens=self.max_tokens,
-                #thinking={
-                    #"type": "enabled",
-                    #"budget_tokens": 10_000
-                #},
+                thinking={
+                    "type": "enabled",
+                    "budget_tokens": 10_000
+                },
             )
     
     def run(self) -> None: 
         with self.getStream() as stream:
             currently_outputting_text = False
             for event in stream:
-                print(event)
+                #print(magenta, event.type, endc)
                 if event.type == "text":
                     if debug() and not currently_outputting_text:
                         print(yellow, "Assistant producing text. . .", endc)
                         currently_outputting_text = True
                     self.cb.text_output(text=event.text)
-                elif event.type == "content_block_start" and event.content_block.type == "tool_use":
-                    if debug(): print(pink, f"tool call started: {event.content_block.name}", endc)
-                    self.cb.tool_request(name=event.content_block.name, inputs={})
+                elif event.type == "thinking":
+                    self.cb.think_output(text=event.thinking)
+                    print(event.thinking)
+                elif event.type == "content_block_start":
+                    if event.content_block.type == "tool_use":
+                        if debug(): print(pink, f"tool call started: {event.content_block.name}", endc)
+                        self.cb.tool_request(name=event.content_block.name, inputs={})
+                    elif event.content_block.type == "thinking":
+                        if debug(): print(cyan, "Assistant is thinking...", endc)
                 elif event.type == "message_stop":
                     message = event.message
                     content = [content.to_dict() for content in message.content]
