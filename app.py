@@ -52,6 +52,25 @@ def user_message(data):
     asst.save(story_history_path)
 
 
+@socket.on('retry_last_response')
+def retry_last_response():
+    global asst, story_history_path
+    
+    if asst and asst.messages:
+        # Remove the last assistant message to retry the response
+        if asst.messages and asst.messages[-1]['role'] == 'assistant':
+            asst.messages.pop()
+            if debug(): print(cyan, "Removed last assistant message for retry", endc)
+            
+            # Generate new response
+            asst.run()
+            emit('turn_end')
+            asst.save(story_history_path)
+        else:
+            if debug(): print(cyan, "No assistant message to retry", endc)
+    else:
+        if debug(): print(cyan, "No assistant instance or messages available for retry", endc)
+
 @socket.on('create_story')
 def create_story(data):
     new_story_name = data['story_name'].strip()
@@ -63,4 +82,4 @@ def index():
     return render_template('index.html', stories=listStoryNames())
 
 if __name__ == "__main__":
-    socket.run(app, port=5001)
+    socket.run(app, port=5001, allow_unsafe_werkzeug=True)

@@ -219,4 +219,5 @@ def StoryToolbox(story_name: str):
         append_story_file_tool_handler,
         read_story_file_tool_handler,
         roll_dice_tool_handler,
+        read_story_planning_guide,
     ], default_kwargs={"current_story": story_name})

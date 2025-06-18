@@ -21,6 +21,7 @@ let conversationHistory = [];
 let currentNarratorMessageElement = null;
 let currentThinkingElement = null;
 let currentStory = null;
+let lastNarratorMessageElement = null;
 
 // Story selection
 if (storyList) {
@@ -209,11 +210,22 @@ socket.on('think_output', function(data) {
 socket.on('text_start', function() {
     console.log('Narrator switched to outputting text');
     
-    // Create a new narrator message element
-    currentNarratorMessageElement = document.createElement('div');
-    currentNarratorMessageElement.className = 'message narrator-message';
-    currentNarratorMessageElement.style.display = 'none'; // Hide until we get content
-    chatHistory.appendChild(currentNarratorMessageElement);
+    // If we're not retrying (currentNarratorMessageElement is null), create a new message element
+    if (!currentNarratorMessageElement) {
+        currentNarratorMessageElement = document.createElement('div');
+        currentNarratorMessageElement.className = 'message narrator-message';
+        currentNarratorMessageElement.style.display = 'none'; // Hide until we get content
+        chatHistory.appendChild(currentNarratorMessageElement);
+    }
+    
+    // Remove any existing retry buttons from previous messages (only show on last message)
+    const existingRetryButtons = chatHistory.querySelectorAll('.retry-button');
+    existingRetryButtons.forEach(button => {
+        const messageActions = button.closest('.message-actions');
+        if (messageActions) {
+            messageActions.remove();
+        }
+    });
 });
 
 // Store the raw content to avoid extra spaces
@@ -320,6 +332,12 @@ socket.on('turn_end', function() {
             content: accumulatedContent,
             timestamp: new Date().toISOString()
         });
+        
+        // Store reference to last narrator message for retry functionality
+        lastNarratorMessageElement = currentNarratorMessageElement;
+        
+        // Add retry button to the last narrator message
+        addRetryButton(lastNarratorMessageElement);
     }
     
     currentNarratorMessageElement = null;
@@ -460,6 +478,64 @@ function hideTypingIndicator() {
     if (typingIndicator) {
         typingIndicator.remove();
     }
+}
+
+function addRetryButton(messageElement) {
+    // Don't add retry button if one already exists
+    if (messageElement.querySelector('.retry-button')) {
+        return;
+    }
+    
+    // Create retry button container
+    const retryContainer = document.createElement('div');
+    retryContainer.className = 'message-actions';
+    
+    // Create retry button
+    const retryButton = document.createElement('button');
+    retryButton.className = 'retry-button';
+    retryButton.innerHTML = '<i class="fas fa-redo"></i>';
+    retryButton.title = 'Retry this response';
+    
+    // Add click handler
+    retryButton.addEventListener('click', function() {
+        handleRetryResponse(messageElement, retryButton);
+    });
+    
+    retryContainer.appendChild(retryButton);
+    messageElement.appendChild(retryContainer);
+}
+
+function handleRetryResponse(messageElement, retryButton) {
+    // Disable retry button during retry
+    retryButton.disabled = true;
+    retryButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    
+    // Disable user input
+    if (userInput) {
+        userInput.disabled = true;
+    }
+    
+    // Remove the last assistant message from conversation history (will be replaced)
+    if (conversationHistory.length > 0 && conversationHistory[conversationHistory.length - 1].role === 'assistant') {
+        conversationHistory.pop();
+    }
+    
+    // Remove current message content but keep the container
+    const messageActions = messageElement.querySelector('.message-actions');
+    messageElement.innerHTML = '';
+    if (messageActions) {
+        messageElement.appendChild(messageActions);
+    }
+    
+    // Set as current narrator message element for new content
+    currentNarratorMessageElement = messageElement;
+    accumulatedContent = '';
+    
+    // Show typing indicator
+    showTypingIndicator();
+    
+    // Request retry from server
+    socket.emit('retry_last_response');
 }
 
 function scrollToBottom() {
