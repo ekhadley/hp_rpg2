@@ -4,23 +4,25 @@ This document contains the complete ruleset, spellbook, and narration instructio
 
 ## Ruleset
 
+The ruleset of the game largely follows the DnD 5'th edition ruleset, with some major modifications.
+
 ### Character Creation
-- **Stats**: Each character has four primary ability scores ranging from 1 to 20. As a first year, you start with 40 points to distribute. The minimum value of a stat is 8 and the maximum is 13.
-  - **Magical Prowess (MP)**: Innate magical talent and spellcasting ability. Modifier = `floor((MP - 10) / 2)`.
-  - **Physical Prowess (PP)**: Strength, agility, and physical resilience. Modifier = `floor((PP - 10) / 2)`.
-  - **Mental Acuity (MA)**: Intelligence, perception, and magical intuition for knowledge and investigation. Modifier = `floor((MA - 10) / 2)`.
-  - **Social Grace (SG)**: Charisma, persuasion, and social interactions. Modifier = `floor((SG - 10) / 2)`.
-- **Proficiencies**: Skills tied to each stat:
-  - **MP**: Charms, Transfiguration, Potions, Standard spells, Curses, Jinxes, Nonverbal Casting, Elemental spells, Healing spells, Enchantment spells.
-  - **PP**: Flying, Dueling, Stealth, Melee.
-  - **MA**: History of Magic, Arithmancy, Ancient Runes, Herbology, Investigation, Perception.
+- **Stats**: Each character has four primary ability scores ranging from 1 to 20. Start with 40 points to distribute. The stats have an initial **minimum of 8** and a **maximum of 13**.
+  - **Magical Prowess (MP)**: Innate magical talent and spellcasting ability.
+  - **Physical Prowess (PP)**: Strength, agility, and physical resilience.
+  - **Mental Acuity (MA)**: Intelligence, perception, and magical intuition for knowledge and investigation.
+  - **Social Grace (SG)**: Social and conversation ability.
+- **Skill Modifiers**: For checks using any primary stat, add `floor((stat - 10) / 2)` to calculate the bonus to the roll.
+- **Proficiencies**: Specific skills tied to each stat. Choose **two** for a first year character.
+  - **MP**: Charms, Transfiguration, Standard spells, Curses, Jinxes, Elemental spells, Healing spells, Enchantment, Nonverbal Casting.
+  - **PP**: Flying, Dueling, Stealth, Melee, Acrobatics, Sleight of Hand.
+  - **MA**: History of Magic, Arithmancy, Ancient Runes, Herbology, Investigation, Perception, Potions.
   - **SG**: Persuasion, Deception, Intimidation, Performance.
-  - **Starting Proficiencies**: At character creation (Year 1), choose **two** proficiencies based on character background/aptitude. Gain **one** additional proficiency based on your chosen House (e.g., Gryffindor might grant Dueling, Ravenclaw History of Magic, Hufflepuff Herbology, Slytherin Deception). Gain additional proficiencies as you progress.
-- **House**: Choose Gryffindor, Hufflepuff, Ravenclaw, or Slytherin. Each provides unique abilities (see [House Abilities](#house-abilities)).
-- **Year**: Select Year 1–7, influencing starting abilities, proficiency bonus, and Magical Stamina.
-- **Magical Stamina (MS)**: Pool = `10 + (Year × 2) + MP Modifier`. Depletes with spellcasting; recharges via rest or potions.
-- **Hit Points (HP)**: Pool = `10 + (Year × 2) + PP Modifier`. Represents physical health.
-- **Starting Spells**: Based on year (see [Spell Acquisition](#spell-acquisition)).
+- **Proficiency Modifier (PM)**: If making a check with a proficient skill, add your proficiency modifier. Starts at 1, grows with year.
+- **House**: Gryffindor, Hufflepuff, Ravenclaw, or Slytherin. Each provides unique abilities.
+- **Magical Stamina (MS)**: Starts at `10 + (Year * 2) + MP Modifier`. Depletes with spellcasting; recharges via rest or potions.
+- **Hit Points (HP)**: Starts at `10 + (Year * 2) + PP Modifier`. Represents physical health.
+- **Starting Spells**: Choose 3 Basic spells.
 - **Backstory**: Describe the character's upbringing, home life, early signs of magic, etc.
   - **Personality Traits**: Core beliefs, mannerisms, quirks, habits.
   - **Fears & Aspirations**: Motivations, goals, or hidden worries.
@@ -28,7 +30,7 @@ This document contains the complete ruleset, spellbook, and narration instructio
   - **Pre-Hogwarts Events** (if applicable): Key moments before starting school.
 
 ### House Abilities
-Each house provides two special abilities—one at Year 1 and another at Year 4.
+Each house provides two special abilities, one at Year 1 and another at Year 4.
 
 #### Gryffindor Abilities
 - **Year 1: Heroic Surge**: Once per long rest, gain temporary MS equal to `Year + Proficiency Bonus`. This bonus MS disappears after 10 minutes or 5 turns. If you end up with less than 0 MS, you faint for an hour.
@@ -43,27 +45,27 @@ Each house provides two special abilities—one at Year 1 and another at Year 4.
 - **Year 4: Eureka Moment**: Once per long rest, you can choose to succeed on one MA-based skill check (Investigation, History of Magic, Arithmancy, Ancient Runes, Perception) as if you had rolled a natural 20.
 
 #### Slytherin Abilities
-- **Year 1: Cunning**: Once per long rest, you can reroll any SG-based check (Persuasion, Deception, Intimidation).
-- **Year 4: Resourceful Magic**: Once per long rest, you may attempt to cast any one spell you have seen successfully cast within the last 24 hours, even if it is not in your spellbook. You must still meet the MS cost and make the spellcasting check (potentially at Disadvantage if it's far above your level).
+- **Year 1: Cunning**: Once per long rest, you can reroll any failed SG-based check.
+- **Year 4: Resourceful Magic**: Once per long rest, you may attempt to cast any one spell you have seen successfully cast within the last 24 hours, even if it is not in your spellbook. You must still meet the MS cost and make the spellcasting check.
 
 ### Dice Mechanics
-- **Checks**: Roll a d20 + relevant stat modifier + proficiency bonus (if proficient) vs. a Difficulty Class (DC) to determine success.
+- **Checks**: Roll `d20 + Stat Modifier + PM (if proficient)` vs. a Difficulty Class (DC) to determine success.
 - **Proficiency Bonus**: Increases with year:
-  - Year 1: +0
-  - Year 2–3: +1
-  - Year 4–6: +2
-  - Year 7: +3
-- **Spellcasting**: To cast a spell, roll d20 + MP modifier + proficiency bonus (if proficient in the spell’s category) vs. the spell’s DC. MS cost is spent regardless of success or failure.
-- **Saving Throws**: When targeted by a spell or effect requiring resistance, roll d20 + relevant stat modifier (specified by the spell/effect) vs. the caster's Spell Save DC (`8 + Caster's MP Modifier + Caster's Proficiency Bonus`) or a set DC for environmental effects.
+  - Year 1: +1
+  - Year 2–3: +2
+  - Year 4–6: +3
+  - Year 7: +4
+- **Spellcasting**: To cast a spell, roll `d20 + MP Modifier + PM (if proficient in the spell’s category)` vs. the spell’s DC. MS cost is spent **regardless** of success or failure.
+- **Saving Throws**: When targeted by a spell or effect requiring resistance, roll `d20 + Stat Modifier (specified by the spell/effect)` vs. the caster's Spell Save DC (`8 + Caster's MP Modifier + Caster's Prof Bonus`) or a set DC for environmental effects.
 
 ### Hit Points and Physical Health
-- **Taking Damage**: HP is reduced by attacks, hazards, or certain strenuous activities (like Hufflepuff's Perseverance).
+- **Taking Damage**: HP is reduced by attacks, hazards, or certain strenuous activities.
 - **Critical State**: At 0 HP, a character falls unconscious and is incapacitated. Further damage while unconscious may lead to death (GM discretion or specific rules for lasting injuries).
-- **Instant Death**: Certain effects, such as the *Avada Kedavra* curse, cause instant, permanent death on a failed save, bypassing the unconscious state.
+  - **Instant Death**: Certain effects, such as the *Avada Kedavra* curse, cause instant, permanent death on a failed save, bypassing the unconscious state.
+  - **Stabilization**: Spells like *Episkey* restore HP as described in the spellbook. Reviving a character at 0 HP requires a healing spell, potion, or physical assistance.
 - **Recovery**:
   - **Short Rest** (1 hour): Regain HP equal to `2d6 + PP Modifier`.
   - **Long Rest** (8 hours): Regain all lost HP.
-- **Healing Magic**: Spells like *Episkey* restore HP as described in the spellbook. Stabilizing a character at 0 HP typically requires a successful MA check (DC 10) or a healing spell.
 
 ### Spell Mechanics
 - **Spell Difficulty & Cost**: Spells are categorized with corresponding DCs and MS costs:
@@ -103,22 +105,17 @@ Nonverbal spellcasting involves performing magic without speaking the incantatio
   - **Circumvention**: Enables casting when silenced or otherwise unable to speak, provided the spell doesn't also require gestures that are restricted.
 
 ### Combat and Dueling
-- **Initiative**: All participants roll d20 + PP modifier at the start of combat. Highest roll goes first, then descending order. Ties broken by highest PP score, then coin flip/GM decision.
+- **Initiative**: All participants roll initiative `d20 + PP Modifier` at the start of combat.
 - **Actions**: On your turn, you can take **one Action** (e.g., Cast a Spell, Attack, Use an Object, Dash, Disengage, Dodge, Help) and **move** up to your speed (typically 30 feet). Some spells or abilities might use a Bonus Action or Reaction if specified.
 - **Reactions**: Some abilities, such as certain spells (e.g., *Protego*), can be used as reactions. A reaction is an instant response to a trigger, such as an incoming attack or spell. Each character can use one reaction per round, which they regain at the start of their next turn.
-- **Offensive Spells**: Caster makes a spellcasting check (d20 + MP Mod + Prof Bonus vs Spell DC). If successful, the spell takes effect. If the spell requires a save, the target makes a saving throw against the caster's Spell Save DC (`8 + Caster MP Mod + Caster Prof Bonus`). Failure means suffering the spell's effects.
+- **Offensive Spells**: Caster makes a spellcasting check (`d20 + MP Mod + Prof Bonus` vs Spell DC). If successful, the spell takes effect. If the spell requires a save, the target makes a saving throw against the caster's Spell Save DC (`8 + Caster MP Mod + Caster Prof Bonus`). Failure means suffering the spell's effects.
 - **Defensive Spells**: Spells like *Protego* can be cast as an Action or Reaction (if specified). They might negate an incoming spell/attack if the caster's spellcasting check meets or exceeds the incoming attack roll or spell save DC, or provide a temporary HP shield, as described by the spell.
-
-### Other Activities
-- **Potions**: Brewing requires ingredients and a check (d20 + MP modifier + Potions proficiency bonus) vs. the potion's DC. Consuming a potion is typically an Action.
-- **Quidditch**: Involves a series of checks using PP (Flying, Dodging), MA (Perception for Seekers, tactical awareness), and potentially SG (team coordination/intimidation) depending on the situation and position.
-- **Social**: Interactions like Persuasion, Deception, Intimidation use d20 + S modifier + relevant proficiency bonus vs. the target's passive MA or SG, or an actively rolled contest (e.g., Insight vs Deception).
 
 ### Progression
 - **Advancement**: Progress through Hogwarts years is achieved via story milestones (typically end-of-year events). Upon advancing a year:
   - Increase **one** ability score of your choice by +1 (maximum 20).
   - Gain **one** new proficiency of your choice.
-  - Learn new spells automatically.
+  - Learn several new spells.
   - Increase MS and HP pools based on the Year component of their formulas.
   - Proficiency Bonus increases at Years 2, 4, and 7.
 
@@ -133,19 +130,17 @@ Nonverbal spellcasting involves performing magic without speaking the incantatio
   - **Start of Year 7**: Learn **1 Expert** spell and gain **one** additional spell of choice up to Advanced level.
   - Spells chosen must be from lists generally considered appropriate for that year level (GM guidance).
 - **Additional Learning**: Spells beyond the automatic ones can be learned through:
-  - **Classes**: Exceptional success on assignments or practical exams (e.g., MA check DC 18).
   - **Mentorship**: Dedicated teaching from professors or skilled peers (requires time and potential checks).
-  - **Personal Study**: Researching in the library or practicing (requires downtime and successful checks, e.g., DC 15+ Investigation to find, then practice time and potentially MP checks).
   - **Discovery**: Finding spellbooks, scrolls, or ancient texts during adventures.
-- **Limitations**: Generally, characters cannot learn spells significantly above their Year level unless specific narrative circumstances (e.g., prodigy, unique discovery) and GM permission allow it. Casting spells above one's typical Year level might incur Disadvantage on the roll or increased MS cost.
+- **Limitations**: Generally, characters cannot learn spells significantly above their Year level unless specific narrative circumstances (e.g., prodigy, unique discovery) and GM permission allow it. After learning, casting spells above one's typical level might incur Disadvantage on the roll or increased MS cost.
 
 ### Transfiguration Rules
-- **Impermanence**: Transfigurations are not permanent and eventually revert. Reversion inside a living being is dangerous/lethal. Sustaining requires periodic re-application of magic.
+- **Impermanence**: Transfigurations are not permanent and eventually revert. Reversion inside a living being is dangerous/lethal. Sustaining requires periodic re-application of magic (reduced DC MP check).
 - **MS Costs & Checks**:
   - Simple (matchstick to needle): **1 MS**, DC 10 MP Check.
   - Moderate (stool to chair): **3 MS**, DC 15 MP Check.
   - Complex / Living (goblet to bird): **5 MS**, DC 20 MP Check.
-- Failure results in partial, unstable, or failed transformation. Human transfiguration is extremely advanced and dangerous (Expert level difficulty, high DCs, potential severe consequences on failure).
+- Failure results in partial, unstable, or failed transformation, which can situationally be very dangerous.
 
 ---
 
@@ -157,11 +152,9 @@ Nonverbal spellcasting involves performing magic without speaking the incantatio
 - **Lumos** — Creates a beam of light from the wand tip.
   - *Effect*: Bright light in a 20 ft radius, dim for another 20 ft.
   - *Duration*: 10 minutes or until dismissed.
-  - *Roll Required*: No (unless searching in darkness — MA check DC 10).
 
 - **Reparo** — Mends a broken non-magical object.
   - *Effect*: Fully restores shattered items like glass, wood, or paper.
-  - *Roll Required*: MP check vs. DC 10 if object is complex or magically damaged.
 
 - **Verdimillious** — Emits green sparks revealing hidden objects or beings.
   - *Effect*: Highlights invisible or concealed entities within 20 ft.
@@ -206,16 +199,16 @@ Nonverbal spellcasting involves performing magic without speaking the incantatio
 - **Silencio** — Prevents vocalization.
   - *Effect*: Target cannot speak or cast verbal spells.
   - *Duration*: 2 rounds.
-  - *Save*: SG save to resist.
+  - *Save*: SG vs caster save DC to resist.
 
 - **Confundo** — Induces mental confusion.
   - *Effect*: Target acts erratically (50% chance to take no action).
   - *Duration*: 2 rounds.
-  - *Save*: MA save to resist.
+  - *Save*: MA vs caster save DC to resist.
 
 #### Elemental
 - **Glacius** — Freezing mist.
-  - *Effect*: 15 ft cone, 2d6 Cold damage. Ground becomes slick.
+  - *Effect*: 15 ft cone, 2d6 Cold damage. Ground becomes icy terrain.
   - *Save*: PP save for half. PP check DC 12 to move in area, otherwise fall prone.
 
 - **Reducto** — Focused force blast.
@@ -239,7 +232,7 @@ Nonverbal spellcasting involves performing magic without speaking the incantatio
 
 - **Arania Exumai** — Radiant repulsion.
   - *Effect*: 2d6 Radiant damage to spider-type creatures.
-  - *Save*: PP save for half.
+  - *Save*: PP save for half damage.
 
 #### Healing
 - **Vulnera Sanentur** — Closes moderate wounds.

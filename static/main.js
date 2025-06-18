@@ -19,6 +19,7 @@ let conversationHistory = [];
 
 // Variables for managing the narrator's message state
 let currentNarratorMessageElement = null;
+let currentThinkingElement = null;
 let currentStory = null;
 
 // Story selection
@@ -117,6 +118,23 @@ socket.on('conversation_history', function(history) {
                 });
             }
         } else if (message.role === 'assistant') {
+            let hasThinking = false;
+            let thinkingContent = '';
+            
+            // First pass: check for thinking content
+            message.content.forEach(element => {
+                if (element.type == "thinking") {
+                    hasThinking = true;
+                    thinkingContent = element.thinking;
+                }
+            });
+            
+            // Create thinking dropdown if thinking content exists
+            if (hasThinking) {
+                addThinkingFromHistory(thinkingContent);
+            }
+            
+            // Second pass: process other content types
             message.content.forEach(element => {
                 if (element.type == "text") {
                     addAssistantMessageFromHistory(element.text);
@@ -141,6 +159,51 @@ socket.on('assistant_ready', function() {
     hideTypingIndicator();
     //accumulatedContent = '';
     //currentNarratorMessageElement = null;
+});
+
+socket.on('think_start', function() {
+    console.log('Model started thinking');
+    
+    // Create thinking dropdown container
+    currentThinkingElement = document.createElement('div');
+    currentThinkingElement.className = 'thinking-container';
+
+    // Create header
+    const thinkingHeader = document.createElement('div');
+    thinkingHeader.className = 'thinking-header';
+    
+    const thinkingLabel = document.createElement('div');
+    thinkingLabel.className = 'thinking-label';
+    thinkingLabel.innerHTML = '<i class="fas fa-brain"></i>';
+    
+    const thinkingToggle = document.createElement('div');
+    thinkingToggle.className = 'thinking-toggle';
+    thinkingToggle.innerHTML = '▼';
+    
+    thinkingHeader.appendChild(thinkingLabel);
+    thinkingHeader.appendChild(thinkingToggle);
+    
+    // Create content area
+    const thinkingContent = document.createElement('div');
+    thinkingContent.className = 'thinking-content';
+    
+    // Add click handler for toggle
+    thinkingHeader.addEventListener('click', function() {
+        const isExpanded = thinkingContent.classList.toggle('expanded');
+        thinkingToggle.classList.toggle('expanded', isExpanded);
+    });
+    
+    currentThinkingElement.appendChild(thinkingHeader);
+    currentThinkingElement.appendChild(thinkingContent);
+    chatHistory.appendChild(currentThinkingElement);
+});
+
+socket.on('think_output', function(data) {
+    if (currentThinkingElement) {
+        const thinkingContent = currentThinkingElement.querySelector('.thinking-content');
+        thinkingContent.textContent += data.text;
+        scrollToBottom();
+    }
 });
 
 socket.on('text_start', function() {
@@ -260,6 +323,7 @@ socket.on('turn_end', function() {
     }
     
     currentNarratorMessageElement = null;
+    currentThinkingElement = null;
     accumulatedContent = '';
     // Enable user input
     if (userInput) {
@@ -299,6 +363,44 @@ function addUserMessage(message, disableInput = true) {
     if (disableInput && userInput) {
         userInput.disabled = true;
     }
+}
+
+function addThinkingFromHistory(thinkingContent) {
+    if (!chatHistory) return;
+    
+    // Create thinking dropdown container (reuse existing logic)
+    const thinkingElement = document.createElement('div');
+    thinkingElement.className = 'thinking-container';
+
+    // Create header
+    const thinkingHeader = document.createElement('div');
+    thinkingHeader.className = 'thinking-header';
+    
+    const thinkingLabel = document.createElement('div');
+    thinkingLabel.className = 'thinking-label';
+    thinkingLabel.innerHTML = '<i class="fas fa-brain"></i>';
+    
+    const thinkingToggle = document.createElement('div');
+    thinkingToggle.className = 'thinking-toggle';
+    thinkingToggle.innerHTML = '▼';
+    
+    thinkingHeader.appendChild(thinkingLabel);
+    thinkingHeader.appendChild(thinkingToggle);
+    
+    // Create content area
+    const thinkingContentDiv = document.createElement('div');
+    thinkingContentDiv.className = 'thinking-content';
+    thinkingContentDiv.textContent = thinkingContent;
+    
+    // Add click handler for toggle
+    thinkingHeader.addEventListener('click', function() {
+        const isExpanded = thinkingContentDiv.classList.toggle('expanded');
+        thinkingToggle.classList.toggle('expanded', isExpanded);
+    });
+    
+    thinkingElement.appendChild(thinkingHeader);
+    thinkingElement.appendChild(thinkingContentDiv);
+    chatHistory.appendChild(thinkingElement);
 }
 
 function addAssistantMessageFromHistory(content) {

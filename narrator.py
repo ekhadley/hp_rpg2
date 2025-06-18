@@ -87,7 +87,6 @@ class Narrator:
                     self.cb.text_output(text=event.text)
                 elif event.type == "thinking":
                     self.cb.think_output(text=event.thinking)
-                    print(event.thinking)
                 elif event.type == "content_block_start":
                     if event.content_block.type == "tool_use":
                         if debug(): print(pink, f"tool call started: {event.content_block.name}", endc)
