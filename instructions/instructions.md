@@ -23,11 +23,7 @@ The ruleset of the game largely follows the DnD 5'th edition ruleset, with some 
 - **Magical Stamina (MS)**: Starts at `10 + (Year * 2) + MP Modifier`. Depletes with spellcasting; recharges via rest or potions.
 - **Hit Points (HP)**: Starts at `10 + (Year * 2) + PP Modifier`. Represents physical health.
 - **Starting Spells**: Choose 3 Basic spells.
-- **Backstory**: Describe the character's upbringing, home life, early signs of magic, etc.
-  - **Personality Traits**: Core beliefs, mannerisms, quirks, habits.
-  - **Fears & Aspirations**: Motivations, goals, or hidden worries.
-  - **Important Relationships**: Family, friends, rivals, mentors.
-  - **Pre-Hogwarts Events** (if applicable): Key moments before starting school.
+- **Backstory**: Describe the character's upbringing, home life, motivations, goals, fears, habits, etc.
 
 ### House Abilities
 Each house provides two special abilities, one at Year 1 and another at Year 4.
@@ -342,9 +338,9 @@ Nonverbal spellcasting involves performing magic without speaking the incantatio
 ---
 
 ### Non-Magical Abilities (No MS)
-- **Melee Attack** — d20 + PP vs. target's PP; damage based on weapon.
-- **Throw** — d20 + PP; damage depends on object.
-- **Dodge** — d20 + PP vs. attack roll; success avoids hit.
+- **Melee Attack** — `d20 + PP` vs. target's PP; damage based on weapon.
+- **Throw** — `d20 + PP`; damage depends on object.
+- **Dodge** — `d20 + PP` vs. attack roll; success avoids hit.
 
 ---
 
